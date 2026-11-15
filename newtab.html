@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <style>html, body { background: #07080a; }</style>
+  <title>New Tab</title>
+
+  <link rel="preload" href="fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/inter-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/jetbrains-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/noto-sans-devanagari-devanagari-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <canvas id="stage" aria-hidden="true"></canvas>
+
+  <nav class="switcher" aria-label="Background animal">
+    <div class="switcher__bar reveal" id="switcher" role="group" aria-label="Choose an animal"></div>
+  </nav>
+
+  <aside class="agenda reveal" id="agenda" hidden aria-label="Upcoming events">
+    <p class="agenda__head">Up next</p>
+    <ol class="agenda__list" id="agenda-list"></ol>
+  </aside>
+
+  <button class="settings-btn reveal" id="settings-btn" type="button" aria-label="Settings" aria-expanded="false" aria-controls="settings">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <path d="M4 7h9M17 7h3M4 17h3M11 17h9"/>
+      <circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>
+    </svg>
+  </button>
+
+  <section class="settings" id="settings" hidden aria-labelledby="settings-title">
+    <h2 class="settings__title" id="settings-title">Settings</h2>
+
+    <div class="setting">
+      <label class="setting__label" for="set-animal">Animal</label>
+      <select class="select" id="set-animal"></select>
+    </div>
+
+    <div class="setting">
+      <label class="setting__label" for="set-glow">Glow</label>
+      <div class="range">
+        <input type="range" id="set-glow" min="0" max="20" step="1">
+        <output id="set-glow-out" for="set-glow">8px</output>
+      </div>
+    </div>
+
+    <fieldset class="setting">
+      <legend class="setting__label">Animal density</legend>
+      <div class="seg">
+        <label><input type="radio" name="density" value="few"><span>Few</span></label>
+        <label><input type="radio" name="density" value="normal"><span>Normal</span></label>
+        <label><input type="radio" name="density" value="many"><span>Many</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="setting">
+      <legend class="setting__label">Motion</legend>
+      <div class="seg">
+        <label><input type="radio" name="motion" value="full"><span>Full</span></label>
+        <label><input type="radio" name="motion" value="calm"><span>Calm</span></label>
+      </div>
+      <p class="setting__note" id="motion-note" hidden>Calm is on because your system asks for reduced motion.</p>
+    </fieldset>
+
+    <fieldset class="setting">
+      <legend class="setting__label">Focus length</legend>
+      <div class="seg">
+        <label><input type="radio" name="focusMin" value="15"><span>15 min</span></label>
+        <label><input type="radio" name="focusMin" value="25"><span>25 min</span></label>
+        <label><input type="radio" name="focusMin" value="50"><span>50 min</span></label>
+      </div>
+    </fieldset>
+
+    <fieldset class="setting">
+      <legend class="setting__label">Murmurations</legend>
+      <div class="seg">
+        <label><input type="radio" name="murmur" value="off"><span>Off</span></label>
+        <label><input type="radio" name="murmur" value="sometimes"><span>Sometimes</span></label>
+        <label><input type="radio" name="murmur" value="often"><span>Often</span></label>
+      </div>
+      <p class="setting__note">The animals spell a word now and then. Double-click the background to call one.</p>
+    </fieldset>
+
+    <fieldset class="setting">
+      <legend class="setting__label">Clock</legend>
+      <div class="seg">
+        <label><input type="radio" name="clock" value="12h"><span>12h</span></label>
+        <label><input type="radio" name="clock" value="24h"><span>24h</span></label>
+      </div>
+    </fieldset>
+
+    <div class="setting setting--toggles">
+      <label class="toggle"><span>Show quote</span><input type="checkbox" id="set-quote" role="switch"></label>
+      <label class="toggle"><span>Show quick links</span><input type="checkbox" id="set-links" role="switch"></label>
+      <label class="toggle"><span>Show calendar</span><input type="checkbox" id="set-calendar" role="switch"></label>
+    </div>
+
+    <div class="setting" id="cal-settings">
+      <span class="setting__label">Google Calendar</span>
+      <p class="setting__note" id="cal-status"></p>
+      <button class="btn btn--ghost btn--block" id="cal-connect" type="button" hidden>Connect Google Calendar</button>
+      <div class="cal-setup" id="cal-setup" hidden>
+        <p class="setting__note">Redirect URI for your Google Cloud OAuth client:</p>
+        <div class="cal-setup__row">
+          <code id="cal-redirect"></code>
+          <button class="btn btn--ghost btn--sm" id="cal-copy" type="button">Copy</button>
+        </div>
+      </div>
+      <p class="setting__note setting__note--error" id="cal-msg" role="status"></p>
+    </div>
+
+    <button class="btn btn--ghost btn--block settings__reset" id="set-reset" type="button">Reset to defaults</button>
+  </section>
+
+  <main class="column">
+    <div class="clock reveal" style="--d:0">
+      <time id="clock"></time>
+      <span class="focus-status" id="focus-status" hidden aria-live="polite"></span>
+      <button class="focus-btn" id="focus-btn" type="button">focus 25</button>
+      <span class="focus-bar" id="focus-bar" hidden aria-hidden="true"><span></span></span>
+    </div>
+
+    <figure class="quote reveal is-hidden" id="quote" style="--d:1" aria-live="polite">
+      <p class="quote__orig" id="quote-orig" hidden></p>
+      <blockquote class="quote__text" id="quote-text"></blockquote>
+      <figcaption class="quote__meta">
+        <cite class="quote__src" id="quote-src"></cite>
+        <button class="icon-btn quote__next" id="quote-next" type="button" aria-label="Show another quote">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path d="M20 12a8 8 0 1 1-2.34-5.66" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M20 4v4.5h-4.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </figcaption>
+    </figure>
+
+    <form class="search reveal" id="search" style="--d:2" role="search" autocomplete="off">
+      <svg class="search__icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <label class="visually-hidden" for="q">Search Google or type a URL</label>
+      <input id="q" name="q" type="text" spellcheck="false" autofocus placeholder="Search Google or type a URL">
+      <button class="mic" id="mic" type="button" hidden aria-label="Dictate" aria-pressed="false">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <rect x="9" y="3" width="6" height="11" rx="3"/>
+          <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>
+        </svg>
+      </button>
+      <button class="go" id="send" type="submit" aria-label="Search">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h13M13 6l6 6-6 6"/>
+        </svg>
+      </button>
+    </form>
+
+    <p class="hints reveal" id="hints" style="--d:3"></p>
+
+    <nav class="links reveal" id="links" style="--d:4" aria-label="Quick links"></nav>
+  </main>
+
+  <form class="popover" id="link-form" hidden autocomplete="off" aria-labelledby="link-form-title">
+    <p class="popover__title" id="link-form-title">Add link</p>
+    <label class="field">
+      <span class="field__label">Name</span>
+      <input name="name" type="text" maxlength="24" spellcheck="false">
+    </label>
+    <label class="field">
+      <span class="field__label">URL</span>
+      <input name="url" type="text" inputmode="url" spellcheck="false" placeholder="example.com">
+    </label>
+    <label class="field field--mark">
+      <span class="field__label">Mark <span class="field__hint">1–2 characters</span></span>
+      <input name="mark" type="text" maxlength="2" spellcheck="false">
+    </label>
+    <p class="popover__error" role="alert"></p>
+    <div class="popover__actions">
+      <button type="button" class="btn btn--ghost" data-cancel>Cancel</button>
+      <button type="submit" class="btn btn--primary">Save</button>
+    </div>
+  </form>
+
+  <div class="menu" id="link-menu" role="menu" aria-label="Link options" hidden>
+    <button type="button" role="menuitem" data-act="edit">Edit</button>
+    <button type="button" role="menuitem" data-act="left">Move left</button>
+    <button type="button" role="menuitem" data-act="right">Move right</button>
+    <button type="button" role="menuitem" data-act="remove" class="menu__danger">Remove</button>
+  </div>
+
+  <p class="corner-hint" id="corner-hint">click anywhere to scatter</p>
+  <p class="signature">Developed by Shivam Bhosale</p>
+  <p class="debug" id="debug" hidden aria-live="off"></p>
+</body>
+</html>
