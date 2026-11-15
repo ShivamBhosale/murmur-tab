@@ -1,4 +1,4 @@
-# Claude New Tab
+# Murmur
 
 A calm, dark new tab page for Chrome (and Edge, Brave, Arc). Living ASCII animals drift
 across a dot grid, a quote sits in the middle, a search bar goes to Google, quick links sit
@@ -12,7 +12,7 @@ Plain HTML, CSS and JavaScript. No build step, no npm, no remote code.
 
 1. Open `chrome://extensions` (Edge: `edge://extensions`, Brave: `brave://extensions`).
 2. Turn on **Developer mode**.
-3. Click **Load unpacked** and pick this folder (`claude-new-tab`).
+3. Click **Load unpacked** and pick this folder (`murmur-tab`).
 4. Open a new tab. If Chrome asks whether to keep the new tab page, choose **Keep it**.
 
 After editing any file: click the reload icon on the extension card, then open a new tab.

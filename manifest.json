@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Claude New Tab",
+  "name": "Murmur",
   "version": "1.0.0",
   "description": "A calm, dark new tab with living ASCII animals, a daily quote, quick links and your upcoming calendar events.",
   "chrome_url_overrides": {
