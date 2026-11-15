@@ -40,6 +40,7 @@ function showQuote(q) {
   if (q.orig) {
     orig.textContent = q.orig;
     orig.lang = q.lang;
+    orig.dir = 'auto'; // Arabic, Hebrew read right-to-left
     orig.hidden = false;
   } else {
     orig.textContent = '';
