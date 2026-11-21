@@ -59,6 +59,7 @@ const CLOSED = String.raw`
 export default {
   id: 'butterfly',
   label: 'Butterfly',
+  latin: 'Lepidoptera',
   color: '#6b97ff',
   count: 14,
   sizeRange: [8, 14],

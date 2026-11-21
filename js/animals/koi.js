@@ -61,6 +61,7 @@ const VARIANTS = [
 export default {
   id: 'koi',
   label: 'Koi',
+  latin: 'Cyprinus rubrofuscus',
   color: '#ff8a5c',
   count: 9,
   sizeRange: [9, 14],

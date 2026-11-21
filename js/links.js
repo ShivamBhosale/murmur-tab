@@ -73,7 +73,7 @@ export function initLinks({ root, form, menu }) {
     const mark = document.createElement('span');
     mark.className = 'link__mark';
     mark.setAttribute('aria-hidden', 'true');
-    mark.textContent = l.mark || autoMark(l.name);
+    mark.textContent = String(i + 1).padStart(2, '0'); // index number, like a notebook's contents page
     const label = document.createElement('span');
     label.className = 'link__label';
     label.textContent = l.name;
@@ -122,7 +122,7 @@ export function initLinks({ root, form, menu }) {
     const label = document.createElement('span');
     label.className = 'link__label';
     label.setAttribute('aria-hidden', 'true');
-    label.textContent = 'Add';
+    label.textContent = 'add an entry';
     b.append(mark, label);
     b.addEventListener('click', () => openForm(-1, b));
     return b;
@@ -222,10 +222,8 @@ export function initLinks({ root, form, menu }) {
     title: form.querySelector('.popover__title'),
     name: form.elements.name,
     url: form.elements.url,
-    mark: form.elements.mark,
     error: form.querySelector('.popover__error'),
   };
-  let markTouched = false;
 
   function openForm(i, anchor) {
     closeAll();
@@ -235,15 +233,11 @@ export function initLinks({ root, form, menu }) {
     f.title.textContent = l ? 'Edit link' : 'Add link';
     f.name.value = l?.name ?? '';
     f.url.value = l?.url ?? '';
-    f.mark.value = l?.mark ?? '';
     f.error.textContent = '';
-    markTouched = !!l;
     place(form, anchor);
     f.name.focus();
   }
 
-  f.name.addEventListener('input', () => { if (!markTouched) f.mark.value = autoMark(f.name.value); });
-  f.mark.addEventListener('input', () => { markTouched = f.mark.value.trim() !== ''; });
   form.addEventListener('input', () => { f.error.textContent = ''; });
 
   form.addEventListener('submit', e => {
@@ -252,7 +246,8 @@ export function initLinks({ root, form, menu }) {
     const url = normalizeUrl(f.url.value);
     if (!name) { f.error.textContent = 'Give it a name.'; f.name.focus(); return; }
     if (!url) { f.error.textContent = 'That doesn’t look like a web address.'; f.url.focus(); return; }
-    const mark = [...(f.mark.value.trim() || autoMark(name))].slice(0, 2).join('');
+    // `mark` is no longer shown (links are numbered) but is still stored for older versions.
+    const mark = editing >= 0 && links[editing]?.name === name ? links[editing].mark : autoMark(name);
     const entry = { name, url, mark };
     let at;
     if (editing >= 0) { links[editing] = entry; at = editing; }

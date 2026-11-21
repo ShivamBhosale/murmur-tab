@@ -53,6 +53,7 @@ const DOWN = String.raw`
 export default {
   id: 'crane',
   label: 'Crane',
+  latin: 'Grus grus',
   color: '#e9e9f2',
   origColor: '#b9bcc6',  // light grey for the Devanagari line, so it stays readable
   count: 11,

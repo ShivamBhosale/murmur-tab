@@ -1,8 +1,9 @@
 # Murmur
 
-A calm, dark new tab page for Chrome (and Edge, Brave, Arc). Living ASCII animals drift
-across a dot grid, a quote sits in the middle, a search bar goes to Google, quick links sit
-below it, and an "Up next" card shows your Google Calendar.
+A new tab page for Chrome (and Edge, Brave, Arc), laid out like a naturalist's night
+notebook. Living ASCII animals drift across ruled paper. A specimen index runs down the left
+margin, the day's entry holds a quote and a search line, an index of quick links sits below,
+and marginalia on the right shows your Google Calendar.
 
 Plain HTML, CSS and JavaScript. No build step, no npm, no remote code.
 
@@ -33,8 +34,8 @@ ES modules from `file://`.) Settings then live in `localStorage` instead of `chr
 | `yt …` / `gh …` | Search YouTube / GitHub |
 | Mic button | Dictate into the search bar (hidden where unsupported, e.g. Brave) |
 | Click the background | Scatter the animals (Koi: drop food) |
-| Animal pills (top) | Switch animal; remembered for next time |
-| Right-click a quick link | Edit, move left/right, remove. Or drag tiles to reorder |
+| Specimens (left margin) | Switch animal; remembered for next time |
+| Right-click an index link | Edit, move earlier/later, remove. Or drag links to reorder |
 | Sliders button (top right) | Settings |
 | `focus 25` (next to the clock) | Start a focus session (see below) |
 | Double-click the background | Call a murmuration |
@@ -95,7 +96,7 @@ While tuning, `__engine.FLOCK.scatterImpulse = 1000` in DevTools changes things 
 
 ### Add an animal
 1. Copy `js/animals/butterfly.js` to `js/animals/<name>.js`.
-2. Change `id`, `label`, `color`, `count`, `sizeRange`, the `frames` and `BEHAVIOR`.
+2. Change `id`, `label`, `latin` (shown under the name in the specimen index), `color`, `count`, `sizeRange`, the `frames` and `BEHAVIOR`.
    - Frames are multi-line strings; keep them within ~16 columns × 7 rows. All frames are
      top-aligned, so keep the body on the same row in every frame.
    - Use `String.raw` so backslashes stay as typed.
@@ -109,7 +110,7 @@ While tuning, `__engine.FLOCK.scatterImpulse = 1000` in DevTools changes things 
 
 ## Google Calendar setup
 
-The "Up next" card needs your own Google OAuth client (free, ~15 minutes, once).
+The marginalia (calendar) needs your own Google OAuth client (free, ~15 minutes, once).
 
 1. Reload the extension, open **Settings**, and under **Google Calendar** copy the
    **redirect URI** (looks like `https://<extension-id>.chromiumapp.org/`).
@@ -166,11 +167,11 @@ js/links.js            quick links
 js/settings.js         settings panel + defaults
 js/focus.js            focus tide: session timer, countdown, sleep/wake
 js/murmur.js           murmurations: text → character targets, swirl in/out
-js/calendar.js         Google sign-in + "Up next" card
+js/calendar.js         Google sign-in + marginalia (calendar)
 js/config.js           your Google client ID and calendar options
 js/clock.js            clock line
 js/storage.js          chrome.storage wrapper with localStorage fallback
-fonts/                 Inter, JetBrains Mono, Noto Sans Devanagari (woff2)
+fonts/                 Instrument Serif, JetBrains Mono, Tiro Devanagari Sanskrit/Marathi/Hindi (woff2)
 icons/                 extension icons
 ```
 

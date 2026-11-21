@@ -56,6 +56,7 @@ const SQUEEZE = String.raw`
 export default {
   id: 'jellyfish',
   label: 'Jellyfish',
+  latin: 'Aurelia aurita',
   color: '#d77ae0',
   count: 9,
   sizeRange: [8, 14],
