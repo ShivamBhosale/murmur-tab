@@ -4,6 +4,7 @@
 export const PREFIXES = {
   yt: { label: 'YouTube', url: q => `https://www.youtube.com/results?search_query=${encodeURIComponent(q)}` },
   gh: { label: 'GitHub',  url: q => `https://github.com/search?q=${encodeURIComponent(q)}` },
+  cd: { label: 'Claude',  url: q => `https://claude.ai/new?q=${encodeURIComponent(q)}` },  // starts a new chat with the query
   // w: { label: 'Wikipedia', url: q => `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(q)}` },
 };
 

@@ -31,7 +31,7 @@ ES modules from `file://`.) Settings then live in `localStorage` instead of `chr
 | Type anywhere | Goes into the search bar (Chrome keeps focus in the address bar on new tabs, so this is the shortcut) |
 | `Enter` | Google search, or go straight to a URL like `github.com/you` |
 | `Cmd/Ctrl + Enter` | Same, in a new tab |
-| `yt …` / `gh …` | Search YouTube / GitHub |
+| `yt …` / `gh …` / `cd …` | Search YouTube / GitHub, or ask Claude (opens a new chat with your question) |
 | Mic button | Dictate into the search bar (hidden where unsupported, e.g. Brave) |
 | Click the background | Scatter the animals (Koi: drop food) |
 | Specimens (left margin) | Switch animal; remembered for next time |
