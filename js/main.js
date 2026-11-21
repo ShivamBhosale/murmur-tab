@@ -107,19 +107,31 @@ function initAnimals(getSettings) {
   applyAnimalTheme(current);
   engine.setAnimal(current, { instant: true });
 
-  // Switcher: one pill per animal. Old animals fade out, new ones come in from the edges.
+  // Specimen index: one entry per animal (numeral, common name, Latin name).
+  // Old animals fade out, new ones come in from the edges.
   const bar = $('switcher');
-  const pills = ANIMALS.map(a => {
+  const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+  const span = (cls, text) => {
+    const s = document.createElement('span');
+    s.className = cls;
+    s.textContent = text;
+    return s;
+  };
+  const pills = ANIMALS.map((a, i) => {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'pill';
+    btn.className = 'specimen';
     btn.dataset.id = a.id;
     btn.setAttribute('aria-pressed', String(a.id === current.id));
-    const dot = document.createElement('span');
-    dot.className = 'pill__dot';
-    dot.setAttribute('aria-hidden', 'true');
-    dot.style.setProperty('--c', a.color);
-    btn.append(dot, a.label);
+    btn.style.setProperty('--c', a.color);
+    const no = span('specimen__no', ROMAN[i] ?? String(i + 1));
+    no.setAttribute('aria-hidden', 'true');
+    btn.append(no, span('specimen__name', a.label));
+    if (a.latin) {
+      const latin = span('specimen__latin', a.latin);
+      latin.lang = 'la';
+      btn.append(latin);
+    }
     btn.addEventListener('click', () => select(a.id));
     bar.append(btn);
     return btn;
@@ -179,7 +191,9 @@ async function boot() {
   let settings = loadSettings();
   const getSettings = () => settings;
 
-  initClock($('clock'), { use24h: settings.clock === '24h' });
+  initClock($('clock'), { use24h: settings.clock === '24h', dateEl: $('mast-date'), entryEl: $('entry-no') });
+  // Murmurations draw their letters in the serif; make sure it's ready before the first one.
+  document.fonts.load('italic 400 64px "Instrument Serif"').catch(() => {});
   initQuote(settings.showQuote);
   initSearch({ form: $('search'), input: $('q'), hints: $('hints') });
   const links = initLinks({ root: $('links'), form: $('link-form'), menu: $('link-menu') });

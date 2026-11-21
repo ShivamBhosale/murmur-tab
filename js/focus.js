@@ -21,7 +21,7 @@ export function initFocus({ clock, status, button, bar, engine, getMinutes, onSt
 
   function label() {
     const m = getMinutes();
-    button.textContent = `focus ${m}`;
+    button.textContent = `begin focus · ${m} min`;
     button.setAttribute('aria-label', `Start a ${m}-minute focus session`);
   }
 
@@ -32,8 +32,8 @@ export function initFocus({ clock, status, button, bar, engine, getMinutes, onSt
     status.hidden = mode === 'idle';
     bar.hidden = mode !== 'running';
     if (mode === 'idle') { label(); document.title = baseTitle; }
-    if (mode === 'running') { button.textContent = 'end'; button.setAttribute('aria-label', 'End focus session'); }
-    if (mode === 'done') { button.textContent = 'again'; button.setAttribute('aria-label', 'Start another focus session'); }
+    if (mode === 'running') { button.textContent = 'end session'; button.setAttribute('aria-label', 'End focus session'); }
+    if (mode === 'done') { button.textContent = 'begin again'; button.setAttribute('aria-label', 'Start another focus session'); }
     onState?.(mode);
   }
 
@@ -42,7 +42,7 @@ export function initFocus({ clock, status, button, bar, engine, getMinutes, onSt
     if (!f) return;
     const left = f.end - Date.now();
     if (left <= 0) { finish(); return; }
-    status.textContent = `FOCUS · ${fmt(left)}`;
+    status.textContent = `in focus · ${fmt(left)}`;
     fill.style.transform = `scaleX(${1 - left / (f.end - f.start)})`;
     document.title = `${fmt(left)} · Focus`;
     clearTimeout(timer);
@@ -63,7 +63,7 @@ export function initFocus({ clock, status, button, bar, engine, getMinutes, onSt
     if (get(KEY, null)) set(KEY, null);
     engine.wake();
     document.title = baseTitle;
-    status.textContent = 'FOCUS DONE · WELL DONE';
+    status.textContent = 'session kept · well done';
     show('done');
     clearTimeout(doneTimer);
     doneTimer = setTimeout(() => { if (!current) show('idle'); }, 8000);

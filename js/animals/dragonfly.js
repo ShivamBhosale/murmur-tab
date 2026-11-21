@@ -48,6 +48,7 @@ const WINGS_FLAT = String.raw`
 export default {
   id: 'dragonfly',
   label: 'Dragonfly',
+  latin: 'Anisoptera',
   color: '#4fd18b',
   count: 8,
   sizeRange: [8, 13],

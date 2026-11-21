@@ -55,6 +55,7 @@ const LEAP = String.raw`
 export default {
   id: 'frog',
   label: 'Frog',
+  latin: 'Anura',
   color: '#86dc52',
   count: 8,
   sizeRange: [8, 13],

@@ -47,6 +47,7 @@ const B = String.raw`
 export default {
   id: 'crab',
   label: 'Crab',
+  latin: 'Brachyura',
   color: '#ff6a5c',
   count: 8,
   sizeRange: [8, 13],

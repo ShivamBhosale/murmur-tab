@@ -17,7 +17,7 @@ export const MURMUR = {
   dimAnimals: 0.1,   // animal opacity while they're "being" the word
 };
 
-const FONT = '600 {size}px "Inter", system-ui, sans-serif';
+const FONT = 'italic 400 {size}px "Instrument Serif", Georgia, serif';
 const rand = (a, b) => a + Math.random() * (b - a);
 
 /** Rasterise lines of text and sample points from the filled pixels. */
